@@ -2,7 +2,6 @@ import { LOGIN_PAGE, NAVIGATE_TYPE } from "@/enums/routerEnum";
 import { warn } from "vue";
 import { deepMerge } from "@/utils";
 import { isIncludesAuthRouter } from "@/common/router/interceptor";
-import { useAuthStore } from "@/store/modules/auth";
 import { cloneDeep } from "lodash-es";
 import queryParams from "./queryParams";
 
@@ -15,7 +14,7 @@ export class Navigates {
         this.type = type || NAVIGATE_TYPE.NAVIGATE_TO;
         this.options = options || {};
     }
-    mixinParam(url: string, params: any) {
+    mixinParam(url: string, params: object) {
         let query = "";
         if (/.*\/.*\?.*=.*/.test(url)) {
             query = queryParams(params, false);
@@ -66,7 +65,7 @@ export class Navigates {
         // 微信小程序端uni.switchTab拦截无效处理
         /* #ifdef MP-WEIXIN */
         if (isIncludesAuthRouter(url)) {
-            const authStore = useAuthStore();
+            const authStore = app.User;
             if (!authStore.isLogin) {
                 const _path = url.startsWith("/") ? url : `/${url}`;
                 let pathQuery = encodeURIComponent(_path);

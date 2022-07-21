@@ -1,6 +1,4 @@
 import { isObject } from "@/utils/is";
-import { Console } from "console";
-
 /**
  * 深度合并
  * @param src

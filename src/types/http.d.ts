@@ -130,4 +130,6 @@ export abstract class HttpRequestAbstract {
 }
 
 declare class HttpRequest extends HttpRequestAbstract {}
+
+
 export default HttpRequest;

@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <div class="tw-h-[300rpx] tw-bg-[#000] tw-w-[300rpx]">123</div>
+        <div class="o-h-[300rpx] o-bg-[#000] o-w-[300rpx]">123</div>
         <tm-sheet>
             <tm-text :font-size="24" _class="font-weight-b" label="基础示例"></tm-text>
             <tm-divider align="left" label="我在左边"></tm-divider>
@@ -30,6 +30,8 @@
 import BasicButton from "@/components/BasicButton/index.vue";
 import { getCurrentInstance, ref, ComponentInternalInstance } from "vue";
 
+import { useAuthStore } from "@/store/modules/auth";
+
 const title = ref("uni-app vue3 ts --Vite");
 
 const { proxy } = <ComponentInternalInstance>getCurrentInstance();
@@ -44,14 +46,21 @@ let state = reactive<{ list: any }>({
     list: [],
 });
 
+// let user = new User();
+console.log(useAuthStore().getToken, "---------ssss");
+
 const getData = async () => {
     let res = await api.bannerList({ type: "2" });
     state.list = res.data;
-    console.log(res)
+    console.log(res);
 };
 
+app.toast("草");
+// console.log(app, "---------我是app");
+// console.log(app.User.token, "---------我是app的token");
+
 const handleGetStarted = () => {
-    router.push("/pages/sss/index", { sss: "auto", name: "我是是是" });
+    router.push("/pages/sss/index", { id: "auto", name: "我是是是" });
 };
 </script>
 

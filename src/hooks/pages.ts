@@ -1,7 +1,16 @@
-import { ToRefs } from "vue";
+import { ToRefs, ComponentInternalInstance } from "vue";
 import { PageParams } from "@/types";
 
 type QueryDefaultData<T> = Omit<PageParams, "data"> & { data: T & AObjectHasAnyKeys };
+
+function getQueryString(url: string): object {
+    var obg = {};
+    url.split(/&/g).forEach(function (item: any) {
+        obg[(item = item.split("="))[0]] = item[1];
+    });
+    return obg;
+}
+
 /**
  * 获得当前页面跳转携带的参数和信息
  * (依赖 app.to )
@@ -9,10 +18,26 @@ type QueryDefaultData<T> = Omit<PageParams, "data"> & { data: T & AObjectHasAnyK
  */
 // export function useQuery<T>(fn: T): ToRefs<QueryDefaultData<T>>;
 // export function useQuery(fn?: (data: any) => void): ToRefs<PageParams>;
-
-export function useQuery<T>(fn?: (data: any) => void | T) {
-    return getCurrentPages().pop()?.["$page"].options;
+export function useQuery() {
+    // const { proxy } = <ComponentInternalInstance>getCurrentInstance();
+    // console.log(app)
 }
+// export function useQuery<T>(fn?: (data: any) => void | T) {
+//     let isF = typeof fn === "function";
+//     const query = reactive<{ data?: any; id?: string; from?: string }>({
+//         data: isF ? {} : fn,
+//         id: null,
+//         from: null,
+//     });
+
+//     Promise.do(async () => {
+//         if (!getCurrentPages().pop()?.["$page"]?.fullPath) await new Promise((r) => onLoad(r));
+//         query.data = getQueryString(getCurrentPages().pop()["$page"].fullPath.split("?")[1]);
+//         isF && fn(query.data);
+//     }).catch((err) => app.error("参数获取失败", err));
+
+//     return toRefs(query);
+// }
 
 import { Mescroll } from "@/types";
 export const ScrollSymbol = Symbol("mescroll");

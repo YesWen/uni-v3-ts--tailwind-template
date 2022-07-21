@@ -16,8 +16,7 @@
 		{
 			"path": "pages/sss/index",
 			"style": {
-				"navigationBarTitleText": "TMUI",
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "TMUI"
 			}
 		}
 	],

@@ -1,7 +1,7 @@
 module.exports = {
     mode: "jit",
     content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx,wxml}"],
-    prefix: "tw-", //配置前缀 
+    prefix: "o-", //配置前缀 
     // darkMode: false, // or 'media' or 'class'
     separator: "__", // 兼容小程序，将 : 替换成 __
     theme: {

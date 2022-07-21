@@ -5,9 +5,10 @@ import { assign } from "lodash-es";
 import { HttpSuccess } from "@/types/http";
 import { Toast } from "@/utils/uniApi";
 import { getEnvValue } from "@/utils/env";
-import { useAuthStore } from "@/store/modules/auth";
 
 const BASE_URL = getEnvValue<string>("VITE_BASE_URL");
+
+console.log(getEnvValue<string>("VITE_BASE_URL"))
 
 const HEADER = {
     "Content-Type": "application/json;charset=UTF-8;",
@@ -27,8 +28,9 @@ const R = createRequest();
 R.interceptors.request.use(
     (options) => {
         const { config } = options;
+
         const token = TOKEN();
-        
+
         if (config.custom?.auth) {
             // const authStore = useAuthStore();
             // if (!authStore.isLogin) {

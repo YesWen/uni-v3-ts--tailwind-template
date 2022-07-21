@@ -3,9 +3,10 @@ import * as Pinia from "pinia";
 import App from "./App.vue";
 import { appPlugin } from "./common/index";
 import tmui from "./tmui";
+import store from "@/store";
 
 export function createApp() {
     const app = createSSRApp(App);
-    app.use(appPlugin).use(tmui);
+    app.use(Pinia.createPinia()).use(appPlugin).use(tmui);
     return { app, Pinia };
 }

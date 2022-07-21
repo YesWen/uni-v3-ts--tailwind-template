@@ -52,6 +52,9 @@ export default ({ mode }: ConfigEnv): UserConfig => {
             },
         },
         plugins: [AutoImport(ImportsConfig), isTest() || uni({ vueOptions: { reactivityTransform: true } }), , isH5 ? undefined : vwt()],
+        esbuild: { keepNames: true },
+        optimizeDeps: { exclude: ["lodash-es"] },
+        test: { globals: true, environment: "jsdom", deps: { inline: ["@vue"] } },
         css: {
             postcss: {
                 plugins: postcssPlugins,

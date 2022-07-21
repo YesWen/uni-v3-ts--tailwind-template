@@ -1,6 +1,5 @@
 import { HOME_PAGE, LOGIN_PAGE, NAVIGATE_TYPE_LIST, NOT_FOUND_PAGE } from "@/enums/routerEnum";
 import { AUTH_PAGE, router } from "@/common/router/index";
-import { useAuthStore } from "@/store/modules/auth";
 import { Toast } from "@/utils/uniApi";
 
 /**
@@ -37,8 +36,6 @@ function addInterceptor(routerName: string) {
         // 跳转前拦截
         invoke: (args) => {
             if (isIncludesAuthRouter(args.url) && args.url !== LOGIN_PAGE) {
-                const authStore = useAuthStore();
-                if (authStore.isLogin) return args;
                 jumpLogin(args.url);
                 return false;
             }
