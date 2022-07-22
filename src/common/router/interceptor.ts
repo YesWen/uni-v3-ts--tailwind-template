@@ -1,6 +1,5 @@
 import { HOME_PAGE, LOGIN_PAGE, NAVIGATE_TYPE_LIST, NOT_FOUND_PAGE } from "@/enums/routerEnum";
 import { AUTH_PAGE, router } from "@/common/router/index";
-import { Toast } from "@/utils/uniApi";
 
 /**
  * 判断当前路径是否在需要验证登录的路径中

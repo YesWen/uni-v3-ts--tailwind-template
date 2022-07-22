@@ -3,7 +3,6 @@ import * as Pinia from "pinia";
 import App from "./App.vue";
 import { appPlugin } from "./common/index";
 import tmui from "./tmui";
-import store from "@/store";
 
 export function createApp() {
     const app = createSSRApp(App);

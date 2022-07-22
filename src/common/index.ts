@@ -12,7 +12,6 @@ export const appPlugin = {
         app.catch(() => (wx["uni"] = uni));
         vueApp.config.globalProperties.app = app;
         vueApp.config.globalProperties.uni = uni;
-        console.log(app);
         vueApp.use(store);
         let sum = "";
         Object.entries(import.meta.globEager("./utils/*.ts")).forEach(([k, v]) => {

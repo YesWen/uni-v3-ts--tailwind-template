@@ -29,7 +29,8 @@
     "build:mp-weixin": "uni build -p mp-weixin",
     "build:quickapp-webview": "uni build -p quickapp-webview",
     "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
-    "build:quickapp-webview-union": "uni build -p quickapp-webview-union"
+    "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-alpha-3040820220424001",
@@ -72,6 +73,7 @@
     "jsdom": "^20.0.0",
     "lint-staged": "^13.0.3",
     "mrm": "^4.0.0",
+    "patch-package": "^6.4.7",
     "postcss": "^8.4.14",
     "postcss-rem-to-responsive-pixel": "^5.1.3",
     "prettier": "^2.7.1",

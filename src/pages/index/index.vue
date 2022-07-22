@@ -57,7 +57,7 @@ const getData = async () => {
 
 app.toast("草");
 // console.log(app, "---------我是app");
-// console.log(app.User.token, "---------我是app的token");
+console.log(app.User.token, "---------我是app的token");
 
 const handleGetStarted = () => {
     router.push("/pages/sss/index", { id: "auto", name: "我是是是" });
