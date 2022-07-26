@@ -22,12 +22,11 @@
                 <tm-divider color="primary" vertical :height="200"></tm-divider>
             </view>
         </tm-sheet>
-        <BasicButton @click="handleGetStarted">Get → </BasicButton>
+        <o-basicButton @click="handleGetStarted">Get → </o-basicButton>
     </view>
 </template>
 
 <script setup lang="ts">
-import BasicButton from "@/components/BasicButton/index.vue";
 import { getCurrentInstance, ref, ComponentInternalInstance } from "vue";
 
 import { useAuthStore } from "@/store/modules/auth";
@@ -35,6 +34,7 @@ import { useAuthStore } from "@/store/modules/auth";
 const title = ref("uni-app vue3 ts --Vite");
 
 const { proxy } = <ComponentInternalInstance>getCurrentInstance();
+
 
 console.log(proxy);
 

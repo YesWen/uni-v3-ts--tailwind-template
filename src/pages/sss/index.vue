@@ -6,7 +6,10 @@
 
 <script setup lang="ts">
 console.log(getCurrentInstance(), "--------------");
-console.log(getCurrentInstance().attrs, "--------------");
+
+onLoad((e) => {
+    console.log(e, "-----------");
+});
 </script>
 
 <style lang="scss" scoped></style>

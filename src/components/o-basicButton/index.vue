@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { buttonProps } from "@/components/BasicButton/prpos";
+import { buttonProps } from "./prpos";
 
 const { disabled } = defineProps(buttonProps);
 const emits = defineEmits(["click"]);

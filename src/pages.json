@@ -2,7 +2,8 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
-			"^tm-(.*)": "@/tmui/components/tm-$1/tm-$1.vue"
+			"^tm-(.*)": "@/tmui/components/tm-$1/tm-$1.vue",
+			"^o-(.*)": "@/components/o-$1/index.vue"
 		}
 	},
 	"pages": [
