@@ -53,13 +53,9 @@
 		getCurrentInstance,
 		computed,
 		ref,
-		provide,
-		inject,
-		onUpdated,
 		onMounted,
-		onUnmounted,
 		nextTick,
-		watch
+ComponentInternalInstance,
 	} from 'vue';
 	import WxCanvas from './canvasinit';
 	import * as echarts from "echarts";
@@ -72,11 +68,11 @@
 	import {
 		enable,
 		WeexBridge,
-	} from '../tm-progress/gcanvas/index.js';
+	} from '../../tool/gcanvas/index.js';
 	// #endif
 	const {
 		proxy
-	} = getCurrentInstance();
+	} = <ComponentInternalInstance>getCurrentInstance();
 
 	const emits = defineEmits(['onInit','touchStart','touchMove','touchEnd','mousedown','mousemove','mouseup','click'])
 	const props = defineProps({
@@ -95,7 +91,7 @@
 	// #endif
 	const _width = computed(() => props.width)
 	const _height = computed(() => props.height)
-	let ctx = null
+	let ctx:UniApp.CanvasContext;
 	let chart:echarts.ECharts|null = null
 	const pixelRatio = uni.getSystemInfoSync().pixelRatio
 	const is2d = ref(false)
@@ -113,7 +109,6 @@
 		}
 		return e;
 	}
-
 	onMounted(() => {
 		
 		nextTick(()=>{
@@ -132,7 +127,6 @@
 		})
 		
 	})
-
 	//appvue,h5,和其它平台。
 	function appvueH5Other() {
 		echarts.registerPreprocessor((option:any) => {
@@ -148,19 +142,19 @@
 		});
 		ctx = uni.createCanvasContext(canvasId.value, proxy);
 		if(!isPc.value){
-			const canvas = new WxCanvas(ctx, canvasId.value, false)
+			const canvas:any = new WxCanvas(ctx, canvasId.value, false,false)
 			echarts.setPlatformAPI({createCanvas:() => canvas});
-			chart = echarts.init(canvas, null, {
+			chart = echarts.init(canvas, "", {
 				width: uni.upx2px(_width.value),
 				height: uni.upx2px(_height.value),
 			});
 			canvas.setChart(chart);
 		}else{
-			const canvasNode = document.querySelector('#'+canvasId.value).getElementsByTagName("canvas")[0];
-			document.querySelector('#'+canvasId.value).removeChild(document.querySelector('#'+canvasId.value).getElementsByTagName("div")[0])
+			const canvasNode = document.querySelector('#'+canvasId.value)?.getElementsByTagName("canvas")[0];
+			document.querySelector('#'+canvasId.value)?.removeChild(<HTMLElement>document.querySelector('#'+canvasId.value)?.getElementsByTagName("div")[0])
 			ctx = canvasNode.getContext("2d")
-			const canvas = new WxCanvas(ctx, canvasId.value, false)
-			chart = echarts.init(canvasNode);
+			const canvas:any = new WxCanvas(ctx, canvasId.value, false,false)
+			chart = echarts.init(<HTMLElement>canvasNode);
 			chart.on("mousedown",(e)=>emits('mousedown',e))
 			chart.on("mousemove",(e)=>emits('mousemove',e))
 			chart.on("mouseup",(e)=>emits('mouseup',e))
@@ -224,12 +218,7 @@
 		ctx = canvasNode.getContext('2d');
 		const w = uni.upx2px(_width.value);
 		const h = uni.upx2px(_height.value);
-		
-		const canvas = new WxCanvas(ctx, canvasId.value, false,)
-		echarts.setCanvasCreator(() => {
-			return canvas;
-		});
-		
+
 		// chart = echarts.init(canvas, null, {
 		// 	width: uni.upx2px(_width.value),
 		// 	height: uni.upx2px(_height.value)
@@ -245,9 +234,9 @@
 	
 	defineExpose(getChart)
 
-	function compareVersion(v1, v2) {
-		v1 = v1.split('.')
-		v2 = v2.split('.')
+	function compareVersion(v11:string, v22:string) {
+		let v1 = v11.split('.')
+		let v2 = v22.split('.')
 		const len = Math.max(v1.length, v2.length)
 
 		while (v1.length < len) {
@@ -270,7 +259,7 @@
 		return 0
 	}
 
-	function touchStart(e) {
+	function touchStart(e:TouchEvent) {
 		if (chart && e.touches.length > 0) {
 			var touch = e.touches[0];
 			var handler = chart.getZr().handler;
@@ -287,7 +276,7 @@
 		}
 	}
 
-	function touchMove(e) {
+	function touchMove(e:TouchEvent) {
 		if (chart && e.touches.length > 0) {
 			var touch = e.touches[0];
 			var handler = chart.getZr().handler;
@@ -300,7 +289,7 @@
 		}
 	}
 
-	function touchEnd(e) {
+	function touchEnd(e:TouchEvent) {
 		if (chart) {
 			const touch = e.changedTouches ? e.changedTouches[0] : {};
 			var handler = chart.getZr().handler;
@@ -317,7 +306,7 @@
 		}
 	}
 
-	function wrapTouch(event) {
+	function wrapTouch(event:TouchEvent) {
 		for (let i = 0; i < event.touches.length; ++i) {
 			const touch = event.touches[i];
 			touch.offsetX = touch.x;

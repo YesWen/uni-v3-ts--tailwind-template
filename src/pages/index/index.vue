@@ -11,7 +11,6 @@
                 </div>
             </template>
         </o-navbar>
-        <div class="o-w-[300rpx] o-h-[300rpx] o-bg-[#000]"></div>
         <!-- <map id="map" :show-location="true" :longitude="113.8561642795139" :latitude="22.58888400607639" :markers="m.markers" @markertap="markerTap" scale="12">
             <div class="oneself o-fixed o-bottom-[200rpx] o-right-[30rpx] o-bg-[#fff] o-w-[60rpx] o-h-[60rpx] o-rounded-50">
                 <cover-image class="center o-w-[40rpx] o-h-[40rpx]" src="/static/image/cabinet/mapLocation.png"></cover-image>

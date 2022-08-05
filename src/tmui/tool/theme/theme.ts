@@ -228,9 +228,9 @@ class themeColors {
 		if(config.dark){
 			txcolor.l = 95;
 		}else{
-			if (nowColor.hsla?.l <= 60) {
+			if (nowColor.hsla?.l <= 65) {
 				txcolor.l = 95;
-			} else if (nowColor.hsla?.l > 60) {
+			} else {
 				if(isGrey){
 					txcolor.l = 10;
 				}else{
@@ -446,15 +446,28 @@ class themeColors {
 		//设置边线样式。
 		if (config.borderDirection == 'all') {
 			css.borderCss[`border`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
-		} else if (config.borderDirection == 'x') {
+		} else if (config.borderDirection == 'x' ||config.borderDirection ==  "leftright") {
 			css.borderCss[`border-left`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
 			css.borderCss[`border-right`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
-		} else if (config.borderDirection == 'y') {
+		} else if (config.borderDirection == 'y' ||config.borderDirection ==  "topbottom") {
 			css.borderCss[`border-top`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
 			css.borderCss[`border-bottom`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
+		} else if (config.borderDirection == 'bottomleft') {
+			css.borderCss[`border-left`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
+			css.borderCss[`border-bottom`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
+		} else if (config.borderDirection == 'bottomright') {
+			css.borderCss[`border-right`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
+			css.borderCss[`border-bottom`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
+		} else if (config.borderDirection == 'topleft') {
+			css.borderCss[`border-left`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
+			css.borderCss[`border-top`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
+		} else if (config.borderDirection == 'topright') {
+			css.borderCss[`border-right`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
+			css.borderCss[`border-top`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
 		} else {
 			let str = '-' + config.borderDirection;
 			css.borderCss[`border${str}`] = `${config.borderWidth}rpx ${config.borderStyle} ${css.border}`;
+			
 		}
 		return css;
 	}

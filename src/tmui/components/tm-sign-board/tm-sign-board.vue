@@ -15,7 +15,7 @@
 		@touchmove="touchsmove"
 		@touchend="touchsend"
 		@mousedown="touchstart"
-		@mousemove.stop.prevent="touchsmove"
+		@mousemove="touchsmove"
 		@mouseup="touchsend"
 		 type="2d" id="canvasId" canvas-id="canvasId" class="canvas"
 			:style="{ width: `${props.width}rpx`, height: `${props.height}rpx` }"></canvas>
@@ -26,11 +26,11 @@
 		@touchmove="touchsmove"
 		@touchend="touchsend"
 		@mousedown="touchstart"
-		@mousemove.stop.prevent="touchsmove"
+		@mousemove="touchsmove"
 		@mouseup="touchsend"
 		@mouseleave="touchsend" @touchcancel="touchsend"
 		 :id="canvasId" :canvas-id="canvasId" class="canvas"
-			:style="{ width: `${props.width}rpx`, height: `${props.height}rpx` }"></canvas>
+			:style="{ width: `${props.width}rpx`, height: `${props.height}rpx` ,'touch-action':'none'}"></canvas>
 		<!-- #endif -->
 			
   </view>
@@ -43,9 +43,9 @@
 	 */
 import { number } from 'echarts';
 import { getCurrentInstance, computed, ref, ComponentInternalInstance, inject, onUpdated, onMounted, onUnmounted, nextTick, watch, ssrContextKey } from 'vue';
-import CanvasRenderingContext2D from './gcanvas/context-2d/RenderingContext.js';
+import CanvasRenderingContext2D from '../../tool/gcanvas/context-2d/RenderingContext.js';
 // #ifdef APP-NVUE 
-import {enable,WeexBridge} from "./gcanvas/index.js";
+import {enable,WeexBridge} from "../../tool/gcanvas/index.js";
 const dom = uni.requireNativePlugin('dom')
 // #endif
 
@@ -116,8 +116,8 @@ function drawNvue_init() {
 		setTimeout(function() {
 			dom.getComponentRect(proxy.$refs.tmspin, function(res) {
 				if(res?.size){
-					ctxLeft = res.size.left;
-					ctxTop = res.size.top;
+					ctxLeft = Math.floor(res.size.left);
+					ctxTop = Math.floor(res.size.top);
 					drawhd = new draw(ctx,uni.upx2px(props.width),uni.upx2px(props.height))
 				}
 				
@@ -151,18 +151,12 @@ function MpWeix_init() {
 
 function touchstart(event:TouchEvent|MouseEvent) {
 	if(!drawhd) return;
-	event.preventDefault()
-	event.stopPropagation()
 	if (event.type.indexOf('mouse')==-1&&event.changedTouches.length==1) {
 		var touch = event.changedTouches[0];
-		// #ifndef MP-WEIXIN || MP-ALIPAY || MP-QQ
-		if(isAndroid=="android"){
-			drawhd.down(touch.pageX,touch.pageY);
-		}else{
-			drawhd.down(touch.pageX-ctxLeft,touch.pageY-ctxTop);
-		}
+		// #ifdef APP-NVUE
+		drawhd.down(touch.pageX-ctxLeft,touch.pageY-ctxTop);
 		// #endif
-		// #ifdef MP-WEIXIN || MP-ALIPAY || MP-QQ
+		// #ifndef APP-NVUE
 		drawhd.down(touch.x,touch.y);
 		// #endif
 		
@@ -172,19 +166,14 @@ function touchstart(event:TouchEvent|MouseEvent) {
 }
 function touchsmove(event:TouchEvent|MouseEvent) {
 	if(!drawhd) return;
-	event.preventDefault()
-	event.stopPropagation()
+	if(event?.preventDefault) event?.preventDefault()
+	if(event?.stopPropagation) event?.stopPropagation()
 	if (event.type.indexOf('mouse')==-1&&event.changedTouches.length == 1) {
 		var touch = event.changedTouches[0];
-		
-		// #ifndef MP-WEIXIN || MP-ALIPAY || MP-QQ
-		if(isAndroid=="android"){
-			drawhd.move(touch.pageX,touch.pageY);
-		}else{
-			drawhd.move(touch.pageX-ctxLeft,touch.pageY-ctxTop);
-		}
+		// #ifdef APP-NVUE
+		drawhd.move(touch.pageX-ctxLeft,touch.pageY-ctxTop);
 		// #endif
-		// #ifdef MP-WEIXIN || MP-ALIPAY || MP-QQ
+		// #ifndef APP-NVUE
 		drawhd.move(touch.x,touch.y);
 		// #endif
 	}else{
@@ -193,20 +182,13 @@ function touchsmove(event:TouchEvent|MouseEvent) {
 }
 function touchsend(event:TouchEvent|MouseEvent) {
 	if(!drawhd) return;
-
-	event.preventDefault()
-	event.stopPropagation()
 	if (event.type.indexOf('mouse')==-1&&event.changedTouches.length == 1) {
 		var touch = event.changedTouches[0];
 		
-		// #ifndef MP-WEIXIN || MP-ALIPAY || MP-QQ
-		if(isAndroid=="android"){
-			drawhd.up(touch.pageX,touch.pageY);
-		}else{
-			drawhd.up(touch.pageX-ctxLeft,touch.pageY-ctxTop);
-		}
+		// #ifdef APP-NVUE
+		drawhd.up(touch.pageX-ctxLeft,touch.pageY-ctxTop);
 		// #endif
-		// #ifdef MP-WEIXIN || MP-ALIPAY || MP-QQ
+		// #ifndef APP-NVUE
 		drawhd.up(touch.x,touch.y);
 		// #endif
 	}else{

@@ -47,7 +47,7 @@
                         @keyboardheightchange="emits('keyboardheightchange')" :maxlength="propsDetail.maxlength"
                         :disabled="propsDetail.disabled"
                         :placeholder="propsDetail.placeholder" :cursorSpacing="propsDetail.cursorSpacing"
-                        :confirmType="propsDetail.confirmType" :confirmHold="propsDetail.confirmHold"
+                         :confirmHold="propsDetail.confirmHold"
                         :autoBlur="propsDetail.autoBlur" :holdKeyboard="propsDetail.holdKeyboard"
 						:cursor="propsDetail.cursor"
 						:show-confirm-bar="propsDetail.showConfirmBar"
@@ -88,7 +88,7 @@
                         @confirm="confirm" @input="inputHandler" @keyboardheightchange="emits('keyboardheightchange')"
                         :disabled="propsDetail.disabled"
                         :placeholder="propsDetail.placeholder" :cursorSpacing="propsDetail.cursorSpacing"
-                        :confirmType="propsDetail.confirmType" :confirmHold="propsDetail.confirmHold"
+                         :confirmHold="propsDetail.confirmHold"
                         :autoBlur="propsDetail.autoBlur" :holdKeyboard="propsDetail.holdKeyboard"
                         :adjustPosition="propsDetail.adjustPosition" :maxlength="propsDetail.maxlength"
 						:autoHeight="propsDetail.autoHeight"
@@ -511,7 +511,25 @@ function inputHandler(e) {
 	
     return e.detail.value;
 }
-watch(_value,()=>uni.$tm.u.debounce(()=>pushFormItem(),350))
+let timerId = NaN;
+function debounce(func:Function, wait = 500, immediate = false) {
+  // 清除定时器
+  if (!isNaN(timerId)) clearTimeout(timerId);
+  // 立即执行，此类情况一般用不到
+  if (immediate) {
+	var callNow = !timerId;
+	timerId = setTimeout(() => {
+	  timerId = NaN;
+	}, wait);
+	if (callNow) typeof func === "function" && func();
+  } else {
+	// 设置定时器，当最后一次操作后，timeout不会再被清除，所以在延时wait毫秒后执行func回调方法
+	timerId = setTimeout(() => {
+	  typeof func === "function" && func();
+	}, wait);
+  }
+}
+watch(_value,()=>debounce(pushFormItem,350))
 
 //--------------以下是专门为form表单专用------------------
 const tmFormFun = inject("tmFormFun", computed(() => ""))
@@ -523,6 +541,7 @@ const validate =(rules:Array<rulesItem>)=>{
             return {
                 ...el,
                 validator:(val:string|number)=>{
+					
                     return String(val).length == 0 || typeof val === null ?false:true
                 }
             }
@@ -569,11 +588,12 @@ async function pushFormItem(isCheckVail = true) {
     if (parentFormItem) {
         if (isCheckVail) {
             validate(toRaw(rulesObj.value)).then(ev => {
+				
                 parentFormItem.pushCom({
                     value: _value.value,
                     isRequiredError: false,//true,错误，false正常 检验状态
                     componentsName: 'tm-input',//表单组件类型。
-                    message: ev[0].message,//检验信息提示语。
+                    message: ev.length==0?"":ev[0].message//检验信息提示语。
                 })
             }).catch(er => {
                 parentFormItem.pushCom({

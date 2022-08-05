@@ -32,7 +32,7 @@
 	 * @example <tm-statistic :font-size="80" prefix="￥" suffix="元"></tm-statistic>
 	 */
 	import { requestAnimationFrame, cancelAnimationFrame } from './requestAnimationFrame';
-	import { computed,watch,watchEffect,onMounted,ref } from "vue"
+	import { computed,watch,watchEffect,onMounted,ref,onBeforeUnmount } from "vue"
 	import tmText from "../tm-text/tm-text.vue"
 	const emits = defineEmits(['mountedCallback','callback'])
 	const props = defineProps({
@@ -174,6 +174,8 @@
 		}
 		emits('mountedCallback');
 	})
+	
+	onBeforeUnmount(()=>clearInterval(timer))
 	
 	function easingFn(t = 0, b = 0, c = 0, d = 0) {
 		let p = (c * (-Math.pow(2, (-10 * t) / d) + 1) * 1024) / 1023 + b;

@@ -4,10 +4,10 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { computed , nextTick, provide ,ref ,watch ,getCurrentInstance,inject, toRaw } from 'vue';
+import { computed , nextTick, provide ,ref ,watch ,getCurrentInstance,inject, toRaw, ComponentInternalInstance } from 'vue';
 import { inputPushItem, rulesItem } from "./../tm-form-item/interface"
 const emits = defineEmits(['update:modelValue','change'])
-const {proxy} = getCurrentInstance()
+const {proxy} = <ComponentInternalInstance>getCurrentInstance()
 const props = defineProps({
     disabled:{
         type:Boolean,
@@ -78,7 +78,7 @@ const rulesObj = inject("tmFormItemRules",computed<Array<rulesItem>>(()=>{
     ]
 }))
 //父级方法。
-let parentFormItem = proxy.$parent
+let parentFormItem:any = proxy?.$parent
 while (parentFormItem) {
     if (parentFormItem?.tmFormComnameFormItem == 'tmFormComnameFormItem' || !parentFormItem) {
         break;
@@ -144,7 +144,7 @@ async function pushFormItem(isCheckVail = true){
                     value: _mValue.value,
                     isRequiredError: false,//true,错误，false正常 检验状态
                     componentsName: 'tm-checkbox-group',//表单组件类型。
-                    message: ev[0].message,//检验信息提示语。
+                    message: ev.length==0?"":ev[0].message,//检验信息提示语。
                 })
             }).catch(er => {
                 parentFormItem.pushCom({

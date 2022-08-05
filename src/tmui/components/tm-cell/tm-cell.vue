@@ -37,7 +37,7 @@
         <view class="flex-1 flex-row flex-row-center-end" style="width: 0px">
           <view class="flex flex-1 flex-row flex-row-center-end pr-12">
             <slot name="rightText">
-              <tm-text :color="_computedValue.rightColor" v-if="_computedValue.rightText" :fontSize="24"
+              <tm-text :color="_computedValue.rightColor" v-if="_computedValue.rightText" :fontSize="_computedValue.rightTextSize"
                 :label="_computedValue.rightText"></tm-text>
             </slot>
           </view>
@@ -112,6 +112,10 @@ const props = defineProps({
     type: [Number],
     default: 0,
   },
+  width: {
+    type: [Number],
+    default: 0,
+  },
   transprent: {
     type: [Boolean],
     default: false,
@@ -126,7 +130,7 @@ const props = defineProps({
     default: "",
   },
   titleFontSize: {
-    type: [Number, String],
+    type: [Number],
     default: 28,
   },
   //标题下方的介绍
@@ -151,6 +155,11 @@ const props = defineProps({
   rightColor: {
     type: String,
     default: "grey",
+  },
+  //右边文字大小。
+  rightTextSize:{
+	type: Number,
+	default: 24,
   },
   showAvatar: {
     type: Boolean,
