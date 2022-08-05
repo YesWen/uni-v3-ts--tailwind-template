@@ -1,5 +1,5 @@
 {
-    "name" : "",
+    "name" : "哈哈",
     "appid" : "__UNI__E3573AB",
     "description" : "",
     "versionName" : "1.0.0",
@@ -16,9 +16,15 @@
             "autoclose" : true,
             "delay" : 0
         },
+        "compatible" : {
+            "ignoreVersion" : true //true表示忽略版本检查提示框，HBuilderX1.9.0及以上版本支持  
+        },
+        //....  
         /* 模块配置 */
         "modules" : {
-            "Canvas" : "nvue canvas"
+            "Canvas" : "nvue canvas",
+            "Maps" : {},
+            "Geolocation" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -45,7 +51,19 @@
             /* ios打包配置 */
             "ios" : {},
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "6ceb3ab8294fb7d2d0712f3d8bbb13ed",
+                        "appkey_android" : "340875d845e8a62745b9912b9ff97c51"
+                    }
+                }
+            }
         }
     },
     /* 快应用特有相关 */

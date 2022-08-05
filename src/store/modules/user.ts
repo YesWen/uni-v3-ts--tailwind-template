@@ -6,11 +6,11 @@ export class User extends Pinia {
 
     // 使用Persist修饰器持久化数据
     @Persist
-    token = "123";
+    token = "666";
     isLogin: false;
 
     // 允许直接编写getter
-    get reverseName() {
+    get getToken() {
         return this.token;
     }
 

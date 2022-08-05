@@ -1,13 +1,27 @@
 <template>
-
-    <tm-drawer ref="drawer" :height="dHeight" @update:show="_show = $event" :show="_show" @close="close" @open="open"
-        :hideHeader="true">
+    <tm-drawer ref="drawer" :height="dHeight" @update:show="_show = $event" :show="_show" @close="close" @open="open" :hideHeader="true">
         <view class="mx-16 mt-24">
-            <tm-calendar-view @update:model-value="_value = $event" :model-value="_value"
-                @update:model-str="_strvalue = $event" :model-str="_strvalue" :default-value="_value" @change="change"
-                @confirm="confirm" @click="onclick" :model="props.model" :color="props.color" :linear="props.linear"
-                :linearDeep="props.linearDeep" :start="props.start" :end="props.end" :disabledDate="props.disabledDate"
-                :multiple="props.multiple" :dateStyle="props.dateStyle" :max="props.max" ref="calendarView">
+            <tm-calendar-view
+                @update:model-value="_value = $event"
+                :model-value="_value"
+                @update:model-str="_strvalue = $event"
+                :model-str="_strvalue"
+                :default-value="_value"
+                @change="change"
+                @confirm="confirm"
+                @click="onclick"
+                :model="props.model"
+                :color="props.color"
+                :linear="props.linear"
+                :linearDeep="props.linearDeep"
+                :start="props.start"
+                :end="props.end"
+                :disabledDate="props.disabledDate"
+                :multiple="props.multiple"
+                :dateStyle="props.dateStyle"
+                :max="props.max"
+                ref="calendarView"
+            >
             </tm-calendar-view>
         </view>
     </tm-drawer>
@@ -17,11 +31,11 @@
  * 日历(弹层式)
  * @description 用法见：tm-calendar-view组件，与其一致的用法。
  */
-import { computed, ref, watch, PropType, Ref, getCurrentInstance, nextTick, watchEffect, ComponentInternalInstance } from "vue"
-import { custom_props, computedTheme, computedClass, computedStyle, computedDark } from '../../tool/lib/minxs';
+import { computed, ref, watch, PropType, Ref, getCurrentInstance, nextTick, watchEffect, ComponentInternalInstance } from "vue";
+import { custom_props, computedTheme, computedClass, computedStyle, computedDark } from "../../tool/lib/minxs";
 import tmCalendarView from "../tm-calendar-view/tm-calendar-view.vue";
 import tmDrawer from "../tm-drawer/tm-drawer.vue";
-import { monthDayItem, dateItemStyle, monthYearItem, weekItem, yearItem } from "../tm-calendar-view/interface"
+import { monthDayItem, dateItemStyle, monthYearItem, weekItem, yearItem } from "../tm-calendar-view/interface";
 const { proxy } = <ComponentInternalInstance>getCurrentInstance();
 /**
  * 事件说明
@@ -30,31 +44,31 @@ const { proxy } = <ComponentInternalInstance>getCurrentInstance();
  * click 日期被选中时触发，注意禁用的日期不会触发 。
  * change 当切换年或者月的时候触发。
  */
-const emits = defineEmits(["update:modelValue", "update:modelStr", "update:show", "confirm", "click", "change", "cancel", "close", "open"])
+const emits = defineEmits(["update:modelValue", "update:modelStr", "update:show", "confirm", "click", "change", "cancel", "close", "open"]);
 
 const props = defineProps({
     ...custom_props,
     show: {
         type: Boolean,
-        default: false
+        default: false,
     },
     /**
      * 数组
      */
     defaultValue: {
         type: Array as PropType<Array<String | Number | Date>>,
-        default: () => []
+        default: () => [],
     },
     modelValue: {
         type: Array as PropType<Array<String | Number | Date>>,
-        default: () => []
+        default: () => [],
     },
     //单向绑定输入展示日期，此字段用来在页面上展示。只向外输出。
     //功能目的：用来在页面上显示，特别是在input上绑定显示非常方便。
     //标准数据保存时，请使用modelValue保存，而不是此值。
     modelStr: {
         type: String,
-        default: ''
+        default: "",
     },
     /**
      * 日期模式
@@ -66,29 +80,29 @@ const props = defineProps({
      */
     model: {
         type: String,
-        default: 'day'
+        default: "day",
     },
     color: {
         type: String,
-        default: 'primary',
+        default: "primary",
     },
     linear: {
         type: String,
-        default: '',
+        default: "",
     },
     linearDeep: {
         type: String,
-        default: 'light',
+        default: "light",
     },
     //指的是：有效的可选时间，小于此时间，不允许选中。
     start: {
         type: [String, Number, Date],
-        default: ""
+        default: "",
     },
     //指的是：有效的可选时间，大于此时间，不允许选中。
     end: {
         type: [String, Number, Date],
-        default: ""
+        default: "",
     },
 
     /** 日历组件属性 */
@@ -97,48 +111,46 @@ const props = defineProps({
     //被禁用的日期将无法选中。
     disabledDate: {
         type: Array as PropType<Array<String | Number | Date>>,
-        default: () => []
+        default: () => [],
     },
     //是否允许多选。
     multiple: {
         type: Boolean,
-        default: false
+        default: false,
     },
     //设定单个日期的样式。
     dateStyle: {
         type: Array as PropType<Array<dateItemStyle>>,
-        default: () => []
+        default: () => [],
     },
     //当multiple=true时，可以选择的最大日期数量。
     max: {
         type: Number,
-        default: 999
-    }
+        default: 999,
+    },
     /** 日历组件属性结束 */
+});
 
-})
-
-const _show = ref(props.show)
-const isConfirm = ref(false)//是否点了确认按钮。
-const _value = ref(props.defaultValue)
-const _strvalue = ref("")
-const _modelType = computed(() => props.model)
+const _show = ref(props.show);
+const isConfirm = ref(false); //是否点了确认按钮。
+const _value = ref(props.defaultValue);
+const _strvalue = ref("");
+const _modelType = computed(() => props.model);
 function close() {
     if (!isConfirm.value) {
-        emits("cancel")
+        emits("cancel");
         //取消了，但没点确认，则要恢复默认值。
         // _value.value = [];
         // nextTick(()=>{
         //     _value.value = props.modelValue.length==0?props.defaultValue:props.modelValue;
         // })
-
     }
-    emits("close")
-    emits("update:show", false)
+    emits("close");
+    emits("update:show", false);
     nextTick(() => {
         //恢复选中之前。如果未点确认按钮，而是直接关闭的话。
-		// 截止3.0.0-alpha-3041120220520001版本后，所有平台都无法获取组件的ref方法了。
-		// console.log(proxy.$refs.calendarView)
+        // 截止3.0.0-alpha-3041120220520001版本后，所有平台都无法获取组件的ref方法了。
+        // console.log(proxy.$refs.calendarView)
         // if (!proxy.$refs.calendarView?.setDefault) return;
         // if (props.modelValue.length == 0) {
         //     // 截止2022-5-13在clinvue uniapp 在h5平台此处有bug，其它平台正常
@@ -146,43 +158,47 @@ function close() {
         // } else {
         //     proxy.$refs.calendarView?.setDefault(props.modelValue)
         // }
-    })
+    });
     isConfirm.value = false;
 }
 function open() {
-    emits("open")
+    emits("open");
 }
 watchEffect(() => {
-    emits("update:modelStr", _strvalue.value)
-})
+    emits("update:modelStr", _strvalue.value);
+});
 
 watchEffect(() => {
     _show.value = props.show;
-})
-watch(() => props.modelValue, () => {
-    _value.value = props.modelValue
-    _strvalue.value = _value.value.join("~")
-}, { deep: true })
+});
+watch(
+    () => props.modelValue,
+    () => {
+        _value.value = props.modelValue;
+        _strvalue.value = _value.value.join("~");
+    },
+    { deep: true }
+);
 function change(e: Array<string | number>) {
-    emits("change", e)
+    emits("change", e);
 }
 function onclick(e: Array<string | number>) {
-    emits("click", e)
+    emits("click", e);
 }
 function confirm(e: Array<string | number>) {
-    emits("confirm", e)
-    emits("update:modelValue", e)
+    emits("confirm", e);
+    emits("update:modelValue", e);
     isConfirm.value = true;
     proxy?.$refs?.drawer?.close();
 }
 
-const win_bottom = uni.getSystemInfoSync()?.safeAreaInsets?.bottom??0
+const win_bottom = uni.getSystemInfoSync()?.safeAreaInsets?.bottom ?? 0;
 const dHeight = computed(() => {
-    if (_modelType.value == 'day') return 880+win_bottom
-    if (_modelType.value == 'rang') return 900+win_bottom
-    if (_modelType.value == 'week') return 740+win_bottom
-    if (_modelType.value == 'month') return 720+win_bottom
-    if (_modelType.value == 'year') return 620+win_bottom
-    return 600+win_bottom
-})
+    if (_modelType.value == "day") return 880 + win_bottom;
+    if (_modelType.value == "rang") return 900 + win_bottom;
+    if (_modelType.value == "week") return 740 + win_bottom;
+    if (_modelType.value == "month") return 720 + win_bottom;
+    if (_modelType.value == "year") return 620 + win_bottom;
+    return 600 + win_bottom;
+});
 </script>

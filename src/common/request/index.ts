@@ -1,6 +1,6 @@
 import { App as VueApp } from 'vue'
 
-import { R  } from './request'
+import { R } from './request'
 
 import { map } from '@/api'
 

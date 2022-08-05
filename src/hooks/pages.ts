@@ -72,5 +72,6 @@ export function useScroll(onPageScroll?: typeof import("@dcloudio/uni-app")["onP
         enable: (type: ScrollOptions["enable"]) => ((enable = type), o),
         mescroll: $$(mescroll),
     };
+
     return o;
 }

@@ -2,23 +2,27 @@ import { ConfigEnv, UserConfig } from "vite";
 import { resolve } from "path";
 import { loadEnv } from "vite";
 import uni from "@dcloudio/vite-plugin-uni";
-const isH5 = process.env.UNI_PLATFORM === "h5";
 import vwt from "weapp-tailwindcss-webpack-plugin/vite";
 import postcssWeappTailwindcssRename from "weapp-tailwindcss-webpack-plugin/postcss";
 import ImportsConfig from "./build/imports.config";
 import AutoImport from "unplugin-auto-import/vite";
 
-const postcssPlugins = [require("autoprefixer")(), require("tailwindcss")()];
+const isH5 = process.env.UNI_PLATFORM === "h5";
+const isApp = process.env.UNI_PLATFORM === "app";
+const WeappTailwindcssDisabled = isH5 || isApp;
 
-if (!isH5) {
-    postcssPlugins.push(
-        require("postcss-rem-to-responsive-pixel")({
-            rootValue: 32,
-            propList: ["*"],
-            transformUnit: "rpx",
-        })
-    );
-    postcssPlugins.push(postcssWeappTailwindcssRename());
+const postcssPlugins = [
+    require("autoprefixer")(),
+    require("tailwindcss")({
+        config: resolve("./tailwind.config.js"),
+    }),
+];
+
+const vitePlugins = [uni({ vueOptions: { reactivityTransform: true } })];
+
+if (!WeappTailwindcssDisabled) {
+    vitePlugins.push(vwt());
+    postcssPlugins.push(postcssWeappTailwindcssRename({}));
 }
 
 export default ({ mode }: ConfigEnv): UserConfig => {
@@ -31,13 +35,13 @@ export default ({ mode }: ConfigEnv): UserConfig => {
             },
         },
         build: {
-            minify: "terser",
-            terserOptions: {
-                compress: {
-                    // 发布时删除 console
-                    drop_console: true,
-                },
-            },
+            // minify: "terser",
+            // terserOptions: {
+            //     compress: {
+            //         // 发布时删除 console
+            //         drop_console: true,
+            //     },
+            // },
         },
         server: {
             host: true,
@@ -51,10 +55,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
                 },
             },
         },
-        plugins: [AutoImport(ImportsConfig), isTest() || uni({ vueOptions: { reactivityTransform: true } }), , isH5 ? undefined : vwt()],
+        plugins: [AutoImport(ImportsConfig), vitePlugins],
         esbuild: { keepNames: true },
         optimizeDeps: { exclude: ["lodash-es"] },
-        test: { globals: true, environment: "jsdom", deps: { inline: ["@vue"] } },
+        // test: { globals: true, environment: "jsdom", deps: { inline: ["@vue"] } },
         css: {
             postcss: {
                 plugins: postcssPlugins,
