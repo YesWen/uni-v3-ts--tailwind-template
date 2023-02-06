@@ -1,0 +1,62 @@
+{
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^tm-(.*)": "@/tmui/components/tm-$1/tm-$1.vue",
+			"^o-(.*)": "@/components/o-$1/index.vue"
+		}
+	},
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "哈哈",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/sss/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/notFound/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
+	},
+	"tabBar": {
+		"color": "#909399",
+		"selectedColor": "#FE5013",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "black",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/image/cabinet/dianchi8.png",
+				"selectedIconPath": "static/image/cabinet/dianchi8.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/notFound/index",
+				"iconPath": "static/image/cabinet/dianchi8.png",
+				"selectedIconPath": "static/image/cabinet/dianchi8.png",
+				"text": "扫码"
+			},
+			{
+				"pagePath": "pages/sss/index",
+				"iconPath": "static/image/cabinet/dianchi8.png",
+				"selectedIconPath": "static/image/cabinet/dianchi8.png",
+				"text": "哈哈"
+			}
+		]
+	}
+}

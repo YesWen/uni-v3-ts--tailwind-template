@@ -1,0 +1,65 @@
+// /* #ifdef APP-NVUE */
+// @import "@/tmui/scss/nvue.css";
+// /* #endif */
+// /* #ifndef APP-NVUE */
+// @import "@/tmui/scss/noNvue.css";
+// /* #endif */
+
+@import "tailwindcss/base";
+@import "tailwindcss/utilities";
+
+view,
+scroll-view,
+swiper,
+match-media,
+movable-area,
+movable-view,
+cover-view,
+cover-image,
+icon,
+text,
+rich-text,
+progress,
+button,
+checkboxe,
+ditor,
+form,
+input,
+label,
+picker,
+picker-view,
+radio,
+slider,
+switch,
+textarea,
+navigator,
+audio,
+camera,
+imagevideo,
+live-player,
+live-pusher,
+map,
+canvas,
+web-view,
+:before,
+:after {
+    box-sizing: border-box;
+}
+
+page {
+    -webkit-overflow-scrolling: touch; // ios滑动不流畅
+    height: 100%;
+    width: 100%;
+    font-family: OPPOSANS;
+    word-break: break-all; //英文文本不换行
+    background-color: #f6f6f6;
+}
+
+/* 隐藏scroll-view的滚动条 */
+::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    -webkit-appearance: none;
+    background: transparent;
+}
